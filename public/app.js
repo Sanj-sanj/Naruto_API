@@ -43,7 +43,7 @@ function checkForJPN() {
     }
     // console.log({quote})
     console.log('Working app.js')
-    return quote
+    return {quote}
 }
 
 module.exports = fetchData;
