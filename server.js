@@ -12,8 +12,17 @@ app.use(cors())
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', (req, res) => {
-    passage().then(resp => {res.json(resp)})
-    
+    //call the imported function to retrieve a quote
+    //then get that response 
+    try{
+        passage()
+        .then(quote => {
+            res.status(200).json(quote)
+        })
+    }
+    catch(err) {
+        console.log(err)
+    }    
 })
 
 app.listen(port, () => {

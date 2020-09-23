@@ -4,46 +4,32 @@ const URL = 'https://raw.githubusercontent.com/Sanj-sanj/DoYouEvenType/master/sc
 
 let quote;
 
+//just fetches a random quote 
+//Function expression works, decleration does not resolve promise
 const fetchData = async () => {
-    const res = await axios.get(URL);
     try {
+        const res = await axios.get(URL);
         const randomCharacter = res.data[Math.floor(Math.random() * res.data.length)];
         quote = randomCharacter[Math.floor(Math.random() * randomCharacter.length)];
-        return checkForJPN();
+        return checkForJPN(res.status);
     }
     catch (err){
-        console.log(err)
+        console.log(`There was an issue. ${err}`)
+        const errStatus = err.response.status
+        const errText = err.response.statusText
+        return { errText, errStatus }
     }
 }
 
-// async function passage(){
-//     // await axios.get(URL)
-//     // .then(res => {
-//     const res = await fetchData()
-//         try {
-//             const randomCharacter = res.data[Math.floor(Math.random() * res.data.length)];
-//             quote = randomCharacter[Math.floor(Math.random() * randomCharacter.length)];
-//             // const testChar = res.data[11]
-//             // quote = testChar[0] //testing purposes
-//             // console.log(quote.quoteText)
-//             return checkForJPN();
-//         }
-//         catch (err){
-//             console.log(err)
-//         }
-//     // })
-// } 
-
-function checkForJPN() {
+function checkForJPN(status) {
     const regexp = /[(「].+/g
     if(regexp.test(quote.quoteText)) {
         console.log('includes jpn to be cut')
         quote.quoteText = quote.quoteText.replace(regexp, '')
         quote.quoteText = quote.quoteText.slice(0, quote.quoteText.length - 2) //removes trailing white space and ". 
     }
-    // console.log({quote})
     console.log('Working app.js')
-    return {quote}
+    return { quote, status }
 }
 
 module.exports = fetchData;
