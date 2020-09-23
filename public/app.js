@@ -21,7 +21,7 @@ const fetchData = async () => {
     }
 }
 
-function checkForJPN(status) {
+function checkForJPN(statusCode) {
     const regexp = /[(「].+/g
     if(regexp.test(quote.quoteText)) {
         console.log('includes jpn to be cut')
@@ -29,7 +29,7 @@ function checkForJPN(status) {
         quote.quoteText = quote.quoteText.slice(0, quote.quoteText.length - 2) //removes trailing white space and ". 
     }
     console.log('Working app.js')
-    return { quote, status }
+    return { statusCode, quote }
 }
 
 module.exports = fetchData;
