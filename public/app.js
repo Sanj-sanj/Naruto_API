@@ -4,9 +4,40 @@ const URL = 'https://raw.githubusercontent.com/Sanj-sanj/Naruto_API/master/passa
 
 let quote;
 
+const fetchAllQuotes = async () => {
+    try {
+        const res = await axios.get(URL);
+        const statusCode = res.status
+        return res;
+    }
+    catch(err) {
+        console.log(err)
+    }
+}
+
+async function fetchByID(id) {
+    let res = await fetchAllQuotes();
+    let statusCode = res.status;
+    let passages = res.data.map(passage => passage)
+    let found = passages.find(character => {
+        return character.find( search => {
+            if(search._id == id) {
+                quote = search
+                return search
+            }
+        })
+    })
+    if(found) {
+        return checkForJPN(statusCode)
+    }
+    statusCode = 404
+    let error = 'Entry does not exist.'
+    return { statusCode, error }
+}
+
 //just fetches a random quote 
 //Function expression works, decleration does not resolve promise
-const fetchData = async () => {
+const fetchRandomQuote = async () => {
     try {
         const res = await axios.get(URL);
         const randomCharacter = res.data[Math.floor(Math.random() * res.data.length)];
@@ -32,4 +63,4 @@ function checkForJPN(statusCode) {
     return { statusCode, quote }
 }
 
-module.exports = fetchData;
+module.exports = {fetchRandomQuote, fetchAllQuotes, fetchByID};
