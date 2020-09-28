@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors')
 
-const URL = 'https://raw.githubusercontent.com/Sanj-sanj/DoYouEvenType/master/scripts/naruto_passages2.json';
+const URL = 'https://raw.githubusercontent.com/Sanj-sanj/Naruto_API/master/passages/naruto_passages2.json';
 
 const port = process.env.PORT || 3200;
 const passage = require('./public/app')
