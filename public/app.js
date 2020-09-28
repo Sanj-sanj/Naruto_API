@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-const URL = 'https://raw.githubusercontent.com/Sanj-sanj/DoYouEvenType/master/scripts/naruto_passages2.json';
+const URL = 'https://raw.githubusercontent.com/Sanj-sanj/Naruto_API/master/passages/naruto_passages2.json';
 
 let quote;
 
