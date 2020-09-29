@@ -15,6 +15,8 @@ app.get('/', (req, res) => {
 
 app.get('/all', (req, res) => {
     const {id} = req.params
+    console.log(req.params)
+    let param = 'list'
     try {
         getPassage.fetchAllQuotes()
         .then(passages => {
@@ -26,11 +28,11 @@ app.get('/all', (req, res) => {
     }
 })
 
-app.get('/search:id', (req, res) => {
-    let {id} = req.params;
-    id = id.slice(1)
+app.get('/search/:id/:all?', (req, res) => {
+    // let all = null
+    let {id, all} = req.params;
     try {
-        getPassage.fetchByID(id)
+        getPassage.fetchByID(id, all)
             .then(quote => {
                 res.status(200).json(quote)
             })
