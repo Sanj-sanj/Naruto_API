@@ -13,7 +13,7 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname, 'index.html')
 })
 
-app.get('/all', (req, res) => {
+app.get('/api/all', (req, res) => {
     const {id} = req.params
     console.log(req.params)
     let param = 'list'
@@ -28,22 +28,24 @@ app.get('/all', (req, res) => {
     }
 })
 
-app.get('/search/:id/:all?', (req, res) => {
-    // let all = null
-    let {id, all} = req.params;
+app.get('/api/search/:id/:all?/:idParam?', (req, res) => {
+    let { id, all, idParam} = req.params;
+    if(idParam) {
+        idParam.split('-').length > 2 ? res.status(400).json({ Error: "Invalid search parameters."}) : idParam = idParam.split('-');
+    }
     try {
-        getPassage.fetchByID(id, all)
+        getPassage.fetchByID(id, all, idParam)
             .then(quote => {
                 res.status(200).json(quote)
             })
     }
      catch(err) {
-         res.status(404).json({message: "That quote you are looking for does not exist."})
+         res.status(404).json({ Error: "That quote you are looking for does not exist."})
          console.log(err)
      }
 })
 
-app.get('/random', (req, res) => {
+app.get('/api/random', (req, res) => {
     //call the imported function to retrieve a quote
     //then get that response 
     try{

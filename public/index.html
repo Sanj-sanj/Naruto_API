@@ -8,8 +8,11 @@
 <body>
     <h1> Welcome to my Naruto quotes API!</h1>
     <h2>How to use:</h2>
-    <p>To get a all quotes off one big JSON, you can either type "/all" at the end of this page's URL, or click: <a href="/all">here.</a></p> 
-    <p>To get a random quote you can either type "/random" at the end of this page's URL, or click: <a href="/random">here.</a></p> 
-    <p>To search a specific quote; type after the URL "/search/{_id}" and specifiy the id parameter. Ex: <a href="/search/30FfXJRRjO" class="href">/search/30FfXJRRjO</a>  
+    <p>To get all quotes off one big JSON, you can either type "/api/all" at the end of this page's URL, or click: <a href="/api/all">here.</a></p> 
+    <p>To get a random quote you can either type "/api/random" at the end of this page's URL, or click: <a href="/api/random">here.</a></p> 
+    <p>To search a specific quote; type after the URL "/api/search/{_id}" and specifiy the id parameter. Ex: <a href="/api/search/KHA5folD-r" class="href">/api/search/KHA5folD-r</a>.</p>
+    <p>Furthermore, add the /api/all suffix at the end of a search id param to return all quotes pertaining the queried param's character. Ex: <a href="/api/search/3zl9IjBc0/all">/api/search/3zl9IjBc0/all</a>.</p> 
+    <p>Using the character {First_Name} will retrieve the first quote on their list, while using the {_id} will retrieve a specific quote of the character.</p>
+    <p>To single out a specific quote or retrieve a range of quotes you can use: <a href="/api/search/Kushina/quote/5">/api/search/Kushina/quote/5</a> or: <a href="/api/search/B6GQsu6PYK6/quote/5-7">/api/search/B6GQsu6PYK6/quote/5-7</a></a>.</p>
 </body>
 </html>

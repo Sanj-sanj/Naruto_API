@@ -1,8 +1,5 @@
 const axios = require('axios');
-
 const URL = 'https://raw.githubusercontent.com/Sanj-sanj/Naruto_API/master/passages/naruto_passages2.json';
-
-// let quote;
 
 const fetchAllQuotes = async () => {
     try {
@@ -15,39 +12,62 @@ const fetchAllQuotes = async () => {
     }
 }
 
-async function fetchByID(id, all) {
-    let quote;
-    let res = await fetchAllQuotes();
+async function fetchByID(searchID, range, searchParam) {
+    const res = await fetchAllQuotes();
     let statusCode = res.status;
-    let passages = res.data.map(passage => passage)
-    let found = passages.find(character => {
-        if(all == 'all') {
-            return character.find(search => search._id == id)
-        }
-        return character.find(quoteByID)
+    let error = 'Invalid search parameters.'
+
+    let quote;    
+    const passages = res.data.map(passage => passage)
+    const found = passages.find(character => {
+        return character.find(quoteByIdentifier)
     })
-    function quoteByID(search) {
-        if(search._id == id) {
+    
+    function quoteByIdentifier(search) {
+        if(search._id == searchID || search.quoteAuthor.split(' ')[0] == searchID) {
             quote = search
             return search
         }
     }
-    if(found && all != 'all') {
+    //user searches for specific quotes either indicating a spevific range EX: 1-4 or single quote EX: 5.
+    if(found && searchParam && range == 'quote'){ 
+        if(searchParam.length == 2){
+            if(searchParam[0] > searchParam[1]) {
+                statusCode = 400
+                return {statusCode, error}
+            }
+            quote = found.filter(function getbyRange(val, i, arr) {
+                if(i + 1 >= searchParam[0] && i + 1 <= searchParam[1]) {
+                    return quote = checkForJPN(val)
+                }
+            })
+        }
+        if(searchParam.length == 1) {
+            quote = found.filter(currQuote => currQuote.id == searchParam[0]).map(function checkForId(quote) {
+                return quote = checkForJPN(quote)
+            })
+            if(quote[0] == null) {
+                statusCode = 404
+                return { statusCode, error }
+            }
+        }
+        return {statusCode, quote}
+    }
+    if(found && range != 'all') {
+        //user searches for a single quote by _id or by name 
         quote = checkForJPN(quote);
         return { statusCode, quote }
     }
-    if(all == 'all') {
+    if(range == 'all' && searchParam == null) {
+        //user searches for all quotes by _id or by name
         const quotes = found.map(function checkAllQuotes(quote) {
-           quote = checkForJPN(quote)
-           return quote
+            return checkForJPN(quote)
         });
         return { statusCode, quotes }
     }
     statusCode = 404
-    let error = 'Entry does not exist.'
     return { statusCode, error }
 }
-
 //just fetches a random quote 
 //Function expression works, decleration does not resolve promise
 const fetchRandomQuote = async () => {
