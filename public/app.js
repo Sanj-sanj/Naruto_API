@@ -32,22 +32,23 @@ async function fetchByID(searchID, range, searchParam) {
     //user searches for specific quotes either indicating a spevific range EX: 1-4 or single quote EX: 5.
     if(found && searchParam && range == 'quote'){ 
         if(searchParam.length == 2){
-            if(searchParam[0] > searchParam[1]) {
+            if(Number(searchParam[0]) > Number(searchParam[1])) {
                 statusCode = 400
                 return {statusCode, error}
             }
             quote = found.filter(function getbyRange(val, i, arr) {
-                if(i + 1 >= searchParam[0] && i + 1 <= searchParam[1]) {
+                if(i + 1 >= Number(searchParam[0]) && i + 1 <= Number(searchParam[1])) {
                     return quote = checkForJPN(val)
                 }
             })
         }
+        console.log(searchParam)
         if(searchParam.length == 1) {
-            quote = found.filter(currQuote => currQuote.id == searchParam[0]).map(function checkForId(quote) {
+            quote = found.filter(currQuote => currQuote.id == Number(searchParam[0])).map(function checkForId(quote) {
                 return quote = checkForJPN(quote)
             })
             if(quote[0] == null) {
-                statusCode = 404
+                Number.isInteger(Number(searchParam[0])) ? (statusCode = 404, error = 'Entry not found.') : statusCode = 400;
                 return { statusCode, error }
             }
         }
